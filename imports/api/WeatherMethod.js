@@ -4,6 +4,7 @@ import { check } from 'meteor/check';
 import { HTTP } from 'meteor/http';
 //DB
 import { WeatherData, WeatherDataToday } from "./WeatherDB";
+import {  insertWeather,insertWeatherToday} from "./SaveInData";
 
 
 Meteor.methods({
@@ -11,7 +12,7 @@ Meteor.methods({
         check(cityName, String);
         //console.log(cityName);
           
-        const apiKey = 'fce9048614d9f578764fbd8de04e9eb0';
+        const apiKey = Meteor.settings.API_KEY;
         const url = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&appid=${apiKey}`;
         
         try {
@@ -42,29 +43,9 @@ Meteor.methods({
                 desc: data.weather[0].description
             }));
             
-            console.log(weatherData)
-            WeatherData.remove({}); // Cleand after adding
+            
 
-            // Guardar En data   SEPARA EN OTRO js
-            weatherData.forEach(data => {
-                WeatherData.insert({
-                cityName: data.cityName,
-                temp: data.temp,
-                humidity: data.humidity,
-                speed: data.speed,
-                date: data.date.split(' ')[0], 
-                time: data.date.split(' ')[1],
-                icon: data.icon,
-                desc: data.desc
-                
-                }, (error, result) => {
-                if (error) {
-                    console.error('Error al insertar datos:', error);
-                } else {
-                    console.log('Datos insertados correctamente:', result);
-                }
-                });
-            });
+            insertWeather(weatherData)
             
         } catch (error) {
             console.error('Error al obtener datos del clima:', error);
@@ -77,11 +58,11 @@ Meteor.methods({
         }
     },
     getWeatherNow(cityName) { // Get One Day Weather
-        //check(cityName, String);
+        check(cityName, String);
         
         console.log('Llamo a get Weather Now con el Nombre ' + cityName);
-        
-        const apiKey = 'fce9048614d9f578764fbd8de04e9eb0';
+
+        const apiKey = Meteor.settings.API_KEY; 
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=${apiKey}&units=metric&exclude=current`;
     
         try {
@@ -92,36 +73,18 @@ Meteor.methods({
             }
             
             const data = {
-            cityName: response.data.name,
-            windSpeed: response.data.wind.speed,
-            temperature: response.data.main.temp,
-            feelsLike: response.data.main.feels_like,
-            humidity: response.data.main.humidity,
-            icon: response.data.weather[0].icon,
-            desc: response.data.weather[0].description
+                cityName: response.data.name,
+                windSpeed: response.data.wind.speed,
+                temperature: response.data.main.temp,
+                feelsLike: response.data.main.feels_like,
+                humidity: response.data.main.humidity,
+                icon: response.data.weather[0].icon,
+                desc: response.data.weather[0].description
             }
-        
-            // Guardar En data   SEPARA EN OTRO js
-            console.log('Vamos a insertar los datos')
-            WeatherDataToday.remove({});
-            WeatherDataToday.insert({
-                cityName: data.cityName,
-                windSpeed: data.windSpeed,
-                temp: data.temperature,
-                feelsLike: data.feelsLike,
-                humidity: data.humidity,
-                icon: data.icon,
-                desc: data.desc
-    
-            }, (error, result) => {
-                if (error) {
-                console.error('Error al insertar datos:', error);
-                } else {
-                console.log('Exito en la carga de datos:', result);
-                }
-            });
-            
-            return data;
+
+            insertWeatherToday(data);
+           
+                    
         } 
         catch (error) {
             console.error('Error to get Data From Name', error);

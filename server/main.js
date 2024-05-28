@@ -8,6 +8,12 @@ import '../imports/api/WeatherMethod'
 
 Meteor.startup(async () => {
 
+  const apiKey = Meteor.settings.API_KEY;
+  const otraApiKey = Meteor.settings.OTRA_API_KEY;
+
+  console.log('Estas son las llaves');
+  console.log(apiKey);
+  console.log(otraApiKey);
   // We publish the entire weatherData collection to all clients.
   // In order to be fetched in real-time to the clients
   Meteor.publish('weatherData', function () {
