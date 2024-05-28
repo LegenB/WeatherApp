@@ -1,0 +1,28 @@
+[x] Install Meteor 
+[x] Create Proyect
+[x] Set up Solid.js
+
+[X] Integrate weather API 'OpenWeatherMap'
+[X] Fetch real-time weather data
+[X] Implement server-side methods to handle API requests securely
+[X] Store fetched weather data in MongoDB
+[X] Use Meteor's reactivity features
+[X] Backend supports real-time data updates
+
+[X] Responsive UI
+[X] Displaying weather information
+[X] Implement functionality to fetch weather data from the backend and display it on the dashboard
+[X] Include features such as searching for weather by location, displaying current weather conditions, and a forecast for the upcoming days
+[X] Utilize Solid.js reactive programming capabilities to update the UI in real-time as new weather data arrives
+
+Opcional
+[ ] Implement user authentication using Meteor's account system
+[ ] Allow users to save their favorite locations and customize their dashboard
+[ ] Add a map interface for visualizing weather conditions geographically
+
+Testing
+[ ] Write unit tests for critical backend functionality using testing frameworks supported by Meteor
+[ ] Perform UI testing (Optional) to ensure the frontend components behave as expected across different devices and screen sizes
+
+Documentation
+[ ] Create Documentation of the proyect
